@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { CheckCircle, Circle, Trash } from 'phosphor-react-native';
 import { Image, View, TextInput, TouchableOpacity, FlatList, Alert, Button, Modal, Text } from 'react-native';
 
 
@@ -55,6 +56,13 @@ export function Home() {
           </View>
 
         </View>
+
+        <View>
+          <Circle />
+          <CheckCircle />
+          <Trash />
+        </View>
+
       </View >
     </>
   )
