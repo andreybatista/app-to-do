@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { CheckCircle, Circle, Trash } from 'phosphor-react-native';
 import { Image, View, TextInput, TouchableOpacity, FlatList, Alert, Button, Modal, Text } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 // import logo from '../../assets/logo.png'
@@ -9,45 +10,91 @@ import { styles } from './styles';
 
 
 type Task = {
-  task: string;
+  id: string;
+  title: string;
   completed: boolean;
 };
 
 export function Home() {
   const [isFocused, setIsFocused] = useState(false);
 
-  const [todoList, setToDoList] = useState<Task[]>([]);
-  const [newTask, setNewTask] = useState<string>('');
+  const [taskTitle, setTaskTitle] = useState('');
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [completedCount, setCompletedCount] = useState(0);
 
-  const addTask = (): void => {
-    if (newTask) {
-      setToDoList([...todoList, { task: newTask, completed: false }]);
-      setNewTask('');
+  useEffect(() => {
+    async function loadTasks() {
+      const tasksString = await AsyncStorage.getItem('@tasks');
+      if (tasksString) {
+        const loadedTasks = JSON.parse(tasksString) as Task[];
+        setTasks(loadedTasks);
+        setCompletedCount(loadedTasks.filter(task => task.completed).length);
+      }
     }
-  };
+    loadTasks();
+  }, []);
 
-  const markTaskComplete = (index: number): void => {
-    const updatedToDoList = [...todoList];
-    updatedToDoList[index].completed = !updatedToDoList[index].completed;
-    setToDoList(updatedToDoList);
-  };
+  useEffect(() => {
+    async function saveTasks() {
+      await AsyncStorage.setItem('@tasks', JSON.stringify(tasks));
+    }
+    saveTasks();
+  }, [tasks]);
 
-  const clearCompletedTasks = (): void => {
-    setToDoList(todoList.filter((task) => !task.completed));
-  };
+  function handleAddTask() {
+    if (taskTitle.trim()) {
+      const newTask: Task = {
+        id: String(new Date().getTime()),
+        title: taskTitle,
+        completed: false,
+      };
+      setTasks([...tasks, newTask]);
+      setTaskTitle('');
+    }
+  }
 
-  const deleteTask = (index: number): void => {
-    const updatedToDoList = [...todoList];
-    updatedToDoList.splice(index, 1);
-    setToDoList(updatedToDoList);
-  };
+  function handleToggleTaskCompleted(id: string) {
+    const updatedTasks = tasks.map(task => {
+      if (task.id === id) {
+        return { ...task, completed: !task.completed };
+      }
+      return task;
+    });
+    setTasks(updatedTasks);
+    setCompletedCount(updatedTasks.filter(task => task.completed).length);
+  }
+
+  function handleDeleteTask(id: string) {
+    const updatedTasks = tasks.filter(task => task.id !== id);
+    setTasks(updatedTasks);
+    setCompletedCount(updatedTasks.filter(task => task.completed).length);
+  }
+
+  function handleDeleteCompletedTasks() {
+    Alert.alert(
+      'Delete completed tasks',
+      'Are you sure you want to delete all completed tasks?',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Delete',
+          onPress: () => {
+            const updatedTasks = tasks.filter(task => !task.completed);
+            setTasks(updatedTasks);
+            setCompletedCount(0);
+          },
+          style: 'destructive',
+        },
+      ],
+    );
+  }
 
   return (
     <>
       <View style={styles.containerHeader}>
         <Image source={require('../../assets/logo.png')} />
       </View >
-      
+
       <View style={styles.containerBody}>
 
         <View style={styles.containerForm}>
@@ -56,11 +103,12 @@ export function Home() {
             placeholderTextColor="#808080"
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
-            onChangeText={(text) => setNewTask(text)}
+            onChangeText={setTaskTitle}
+            value={taskTitle}
             placeholder='Adicione uma nova tarefa'
           />
 
-          <TouchableOpacity style={styles.button} onPress={addTask}>
+          <TouchableOpacity style={styles.button} onPress={handleAddTask}>
             <Text style={styles.buttonText}>
               +
             </Text>
@@ -80,43 +128,46 @@ export function Home() {
             <Text style={[styles.textHeaderList, { color: "#8284FA" }]}>
               Concluídas
             </Text>
-            <Text style={styles.textCountList}>0</Text>
+            <Text style={styles.textCountList}>{completedCount}</Text>
           </View>
 
         </View>
 
-        {todoList.map((task, index) => (
-          <View style={styles.containerList} key={index} >
+        <FlatList
+          data={tasks}
+          keyExtractor={item => item.id}
+          renderItem={({ item }) => (
+            <View style={styles.containerList}>
 
-            <TouchableOpacity style={{}} onPress={() => markTaskComplete(index)}>
-              {
-                task.completed
-                  ?
-                  <CheckCircle color='#5E60CE' weight='fill' />
-                  :
-                  <Circle color='#4EA8DE' />
-              }
+              <TouchableOpacity style={{}} onPress={() => handleToggleTaskCompleted(item.id)}>
+                {
+                  item.completed
+                    ?
+                    <CheckCircle color='#5E60CE' weight='fill' />
+                    :
+                    <Circle color='#4EA8DE' />
+                }
 
-              <View style={{ backgroundColor: "#fff", borderRadius: 999, width: "50%" }} />
+                <View style={{ backgroundColor: "#fff", borderRadius: 999, width: "50%" }} />
 
-            </TouchableOpacity>
+              </TouchableOpacity>
 
-            <Text style={{ flex: 1, color: "#fff" }}>
-              {task.task}
-            </Text>
+              <Text style={styles.taskTitle}>
+                {item.title}
+              </Text>
 
-            <TouchableOpacity onPress={() => deleteTask(index)}>
-              <Trash color='#808080' />
-            </TouchableOpacity>
-          </View>
-        ))}
+              <TouchableOpacity onPress={() => handleDeleteTask(item.id)}>
+                <Trash color='#808080' />
+              </TouchableOpacity>
+            </View>
+          )}
+        />
 
 
-        <TouchableOpacity style={styles.clearButton} onPress={clearCompletedTasks}>
+        <TouchableOpacity style={styles.clearButton} onPress={handleDeleteCompletedTasks}>
           <Text style={styles.buttonText}>Clear Completed</Text>
         </TouchableOpacity>
-
-
+        
       </View >
     </>
   )

@@ -23,7 +23,6 @@ export const styles = StyleSheet.create({
   },
   input: {
     fontSize: 16,
-    lineHeight: 140,
     color: "#F2F2F2",
     backgroundColor: "#262626",
     borderWidth: 1,
@@ -89,14 +88,20 @@ export const styles = StyleSheet.create({
     borderRadius: 8,
     paddingVertical: 12,
     paddingHorizontal: 15,
-    gap: 11
+    gap: 11,
+    marginBottom: 8,
   },
   clearButton: {
-    backgroundColor: '#e74c3c',
+    backgroundColor: "#e74c3c",
     padding: 10,
     borderRadius: 5,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     marginTop: 10,
+  },
+  taskTitle: {
+    flex: 1,
+    color: "#fff",
+    fontSize: 14
   },
 });
