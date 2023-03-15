@@ -78,4 +78,25 @@ export const styles = StyleSheet.create({
     fontSize: 12,
     lineHeight: 15,
   },
+  containerList: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    backgroundColor: "#262626",
+    borderWidth: 1,
+    borderColor: "#333333",
+    boxShadow: "0px 2px 8px rgba(0, 0, 0, 0.06)",
+    borderRadius: 8,
+    paddingVertical: 12,
+    paddingHorizontal: 15,
+    gap: 11
+  },
+  clearButton: {
+    backgroundColor: '#e74c3c',
+    padding: 10,
+    borderRadius: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 10,
+  },
 });

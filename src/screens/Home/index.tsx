@@ -7,20 +7,31 @@ import { Image, View, TextInput, TouchableOpacity, FlatList, Alert, Button, Moda
 
 import { styles } from './styles';
 
+
+type Task = {
+  task: string;
+  completed: boolean;
+};
+
 export function Home() {
   const [isFocused, setIsFocused] = useState(false);
 
-  // const DEFAULT_IMAGE = Image.resolveAssetSource(DefaultImage).uri;
+  const [todoList, setToDoList] = useState<Task[]>([]);
+  const [newTask, setNewTask] = useState<string>('');
 
+  const addTask = (): void => {
+    if (newTask) {
+      setToDoList([...todoList, { task: newTask, completed: false }]);
+      setNewTask('');
+    }
+  };
 
   return (
     <>
       <View style={styles.containerHeader}>
-
         <Image source={require('../../assets/logo.png')} />
-
-
       </View >
+
       <View style={styles.containerBody}>
 
         <View style={styles.containerForm}>
@@ -29,10 +40,11 @@ export function Home() {
             placeholderTextColor="#808080"
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
+            onChangeText={(text) => setNewTask(text)}
             placeholder='Adicione uma nova tarefa'
           />
 
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity style={styles.button} onPress={addTask}>
             <Text style={styles.buttonText}>
               +
             </Text>
@@ -57,11 +69,37 @@ export function Home() {
 
         </View>
 
-        <View>
-          <Circle />
-          <CheckCircle />
-          <Trash />
-        </View>
+        {todoList.map((task, index) => (
+          <View style={styles.containerList} key={index} >
+
+            <TouchableOpacity style={{}} onPress={() => markTaskComplete(index)}>
+              {
+                task.completed
+                  ?
+                  <CheckCircle color='#5E60CE' weight='fill' />
+                  :
+                  <Circle color='#4EA8DE' />
+              }
+
+              <View style={{ backgroundColor: "#fff", borderRadius: 999, width: "50%" }} />
+
+            </TouchableOpacity>
+
+            <Text style={{ flex: 1, color: "#fff" }}>
+              {task.task}
+            </Text>
+
+            <TouchableOpacity onPress={() => deleteTask(index)}>
+              <Trash color='#808080' />
+            </TouchableOpacity>
+          </View>
+        ))}
+
+
+        <TouchableOpacity style={styles.clearButton} onPress={clearCompletedTasks}>
+          <Text style={styles.buttonText}>Clear Completed</Text>
+        </TouchableOpacity>
+
 
       </View >
     </>
