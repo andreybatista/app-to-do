@@ -72,12 +72,12 @@ export function Home() {
 
   function handleDeleteCompletedTasks() {
     Alert.alert(
-      'Delete completed tasks',
-      'Are you sure you want to delete all completed tasks?',
+      'Excluir tarefas concluídas',
+      'Tem certeza de que deseja excluir todas as tarefas concluídas?',
       [
-        { text: 'Cancel', style: 'cancel' },
+        { text: 'Cancelar' },
         {
-          text: 'Delete',
+          text: 'Deletar',
           onPress: () => {
             const updatedTasks = tasks.filter(task => !task.completed);
             setTasks(updatedTasks);
@@ -92,7 +92,7 @@ export function Home() {
   return (
     <>
       <View style={styles.containerHeader}>
-        <Image style={{width: 75, height: 75}} source={require('../../assets/logo.png')} />
+        <Image style={{ width: 263, height: 75 }} resizeMode="contain" source={require('../../assets/logo.png')} />
       </View >
 
       <View style={styles.containerBody}>
@@ -153,7 +153,7 @@ export function Home() {
           renderItem={({ item }) => (
             <View style={[styles.containerList, item.completed && styles.containerListCompleted]}>
 
-              <TouchableOpacity onPress={() => handleToggleTaskCompleted(item.id)}>
+              <TouchableOpacity style={styles.buttonChecked} onPress={() => handleToggleTaskCompleted(item.id)}>
                 {
                   item.completed
                     ?
@@ -166,7 +166,7 @@ export function Home() {
 
               </TouchableOpacity>
 
-              <Text style={styles.taskTitle}>
+              <Text style={[styles.taskTitle, !!item.completed && styles.taskCompleted]}>
                 {item.title}
               </Text>
 

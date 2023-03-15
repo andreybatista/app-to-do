@@ -41,7 +41,7 @@ export const styles = StyleSheet.create({
     alignItems: "center",
   },
   buttonDisabled: {
-    opacity: 0.5
+    opacity: 0.5,
   },
   buttonText: {
     fontSize: 25,
@@ -91,8 +91,15 @@ export const styles = StyleSheet.create({
     borderRadius: 8,
     paddingVertical: 12,
     paddingHorizontal: 15,
-    gap: 11,
+    paddingTop: 12,
+    paddingRight: 15,
+    paddingBottom: 12,
+    paddingLeft: 10,
+    gap: 8,
     marginBottom: 8,
+  },
+  buttonChecked: {
+    padding: 5,
   },
   containerListCompleted: {
     borderColor: "#16161a",
@@ -101,5 +108,9 @@ export const styles = StyleSheet.create({
     flex: 1,
     color: "#fffffe",
     fontSize: 14,
+  },
+  taskCompleted: {
+    textDecorationLine: "line-through",
+    color: "#808080",
   },
 });
