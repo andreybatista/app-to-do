@@ -113,4 +113,20 @@ export const styles = StyleSheet.create({
     textDecorationLine: "line-through",
     color: "#808080",
   },
+  textEmptyPrimary: {
+    fontWeight: "700",
+    fontSize: 14,
+    textAlign: "center",
+    color: "#808080",
+  },
+  textEmptySecondary: {
+    fontWeight: "400",
+    fontSize: 14,
+    textAlign: "center",
+    color: "#808080",
+  },
+  containerEmpty: {
+      alignItems: 'center',
+      marginTop: 48
+  }
 });

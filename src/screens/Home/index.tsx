@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { CheckCircle, Circle, Trash } from 'phosphor-react-native';
+import { CheckCircle, Circle, Clipboard, Trash } from 'phosphor-react-native';
 import { Image, View, TextInput, TouchableOpacity, FlatList, Alert, Button, Modal, Text } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -147,36 +147,51 @@ export function Home() {
 
         </View>
 
-        <FlatList
-          data={tasks}
-          keyExtractor={item => item.id}
-          renderItem={({ item }) => (
-            <View style={[styles.containerList, item.completed && styles.containerListCompleted]}>
+        {tasks.length != 0 ?
+          <>
+            <FlatList
+              data={tasks}
+              keyExtractor={item => item.id}
+              renderItem={({ item }) => (
+                <View style={[styles.containerList, item.completed && styles.containerListCompleted]}>
 
-              <TouchableOpacity style={styles.buttonChecked} onPress={() => handleToggleTaskCompleted(item.id)}>
-                {
-                  item.completed
-                    ?
-                    <CheckCircle size={20} color='#8284FA' weight='fill' />
-                    :
-                    <Circle size={20} color='#2cb67d' />
-                }
+                  <TouchableOpacity style={styles.buttonChecked} onPress={() => handleToggleTaskCompleted(item.id)}>
+                    {
+                      item.completed
+                        ?
+                        <CheckCircle size={20} color='#8284FA' weight='fill' />
+                        :
+                        <Circle size={20} color='#2cb67d' />
+                    }
 
-                <View style={{ backgroundColor: "#fff", borderRadius: 999, width: "50%" }} />
+                    <View style={{ backgroundColor: "#fff", borderRadius: 999, width: "50%" }} />
 
-              </TouchableOpacity>
+                  </TouchableOpacity>
 
-              <Text style={[styles.taskTitle, !!item.completed && styles.taskCompleted]}>
-                {item.title}
-              </Text>
+                  <Text style={[styles.taskTitle, !!item.completed && styles.taskCompleted]}>
+                    {item.title}
+                  </Text>
 
-              <TouchableOpacity onPress={() => handleDeleteTask(item.id)}>
-                <Trash color='#808080' size={20} />
-              </TouchableOpacity>
-            </View>
-          )}
-          showsVerticalScrollIndicator={false}
-        />
+                  <TouchableOpacity onPress={() => handleDeleteTask(item.id)}>
+                    <Trash color='#808080' size={20} />
+                  </TouchableOpacity>
+                </View>
+              )}
+              showsVerticalScrollIndicator={false}
+            />
+          </>
+          :
+          <View style={styles.containerEmpty}>
+            <Clipboard color="#808080" size={56} weight="light" />
+            <Text style={styles.textEmptyPrimary}>
+              Você ainda não tem tarefas cadastradas
+            </Text>
+            <Text style={styles.textEmptySecondary}>
+              Crie tarefas e organize seus itens a fazer
+            </Text>
+
+          </View>
+        }
 
       </View >
     </>

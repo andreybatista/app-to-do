@@ -21,10 +21,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#17161a"
-      }
+      },
+      "package": "andreycode.to_do"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "2bb757b8-9c1b-49c0-87a7-d506e112ec22"
+      }
     }
   }
 }
