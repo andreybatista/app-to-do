@@ -92,7 +92,7 @@ export function Home() {
   return (
     <>
       <View style={styles.containerHeader}>
-        <Image source={require('../../assets/logo.png')} />
+        <Image style={{width: 75, height: 75}} source={require('../../assets/logo.png')} />
       </View >
 
       <View style={styles.containerBody}>
@@ -108,7 +108,11 @@ export function Home() {
             placeholder='Adicione uma nova tarefa'
           />
 
-          <TouchableOpacity style={styles.button} onPress={handleAddTask}>
+          <TouchableOpacity
+            style={[styles.button, !taskTitle && styles.buttonDisabled]}
+            disabled={!taskTitle}
+            onPress={handleAddTask}
+          >
             <Text style={styles.buttonText}>
               +
             </Text>
@@ -118,17 +122,27 @@ export function Home() {
         <View style={styles.containerListHeader}>
 
           <View style={styles.boxHeaderList}>
-            <Text style={[styles.textHeaderList, { color: "#4EA8DE" }]}>
+            <Text style={[styles.textHeaderList, { color: "#2cb67d" }]}>
               Criadas
             </Text>
-            <Text style={styles.textCountList}>0</Text>
+            <Text style={styles.textCountList}>
+              {tasks.length}
+            </Text>
           </View>
 
           <View style={styles.boxHeaderList}>
+            {!!completedCount && (
+              <TouchableOpacity onPress={handleDeleteCompletedTasks}>
+                <Trash color='#BE5E5D' size={19} />
+              </TouchableOpacity>
+            )}
             <Text style={[styles.textHeaderList, { color: "#8284FA" }]}>
               Concluídas
             </Text>
-            <Text style={styles.textCountList}>{completedCount}</Text>
+            <Text style={styles.textCountList}>
+              {completedCount}
+            </Text>
+
           </View>
 
         </View>
@@ -137,15 +151,15 @@ export function Home() {
           data={tasks}
           keyExtractor={item => item.id}
           renderItem={({ item }) => (
-            <View style={styles.containerList}>
+            <View style={[styles.containerList, item.completed && styles.containerListCompleted]}>
 
-              <TouchableOpacity style={{}} onPress={() => handleToggleTaskCompleted(item.id)}>
+              <TouchableOpacity onPress={() => handleToggleTaskCompleted(item.id)}>
                 {
                   item.completed
                     ?
-                    <CheckCircle color='#5E60CE' weight='fill' />
+                    <CheckCircle size={20} color='#8284FA' weight='fill' />
                     :
-                    <Circle color='#4EA8DE' />
+                    <Circle size={20} color='#2cb67d' />
                 }
 
                 <View style={{ backgroundColor: "#fff", borderRadius: 999, width: "50%" }} />
@@ -157,17 +171,13 @@ export function Home() {
               </Text>
 
               <TouchableOpacity onPress={() => handleDeleteTask(item.id)}>
-                <Trash color='#808080' />
+                <Trash color='#808080' size={20} />
               </TouchableOpacity>
             </View>
           )}
+          showsVerticalScrollIndicator={false}
         />
 
-
-        <TouchableOpacity style={styles.clearButton} onPress={handleDeleteCompletedTasks}>
-          <Text style={styles.buttonText}>Clear Completed</Text>
-        </TouchableOpacity>
-        
       </View >
     </>
   )

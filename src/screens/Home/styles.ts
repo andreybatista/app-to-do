@@ -3,14 +3,14 @@ import { StyleSheet } from "react-native";
 export const styles = StyleSheet.create({
   containerHeader: {
     height: 173,
-    backgroundColor: "#0D0D0D",
+    backgroundColor: "#16161a",
     justifyContent: "center",
     alignItems: "center",
     // padding: 24,
   },
   containerBody: {
     flex: 1,
-    backgroundColor: "#1A1A1A",
+    backgroundColor: "#242629",
     paddingLeft: 24,
     paddingRight: 24,
   },
@@ -35,17 +35,20 @@ export const styles = StyleSheet.create({
   button: {
     height: 54,
     width: 54,
-    backgroundColor: "#1E6F9F",
+    backgroundColor: "#2cb67d",
     borderRadius: 6,
     justifyContent: "center",
     alignItems: "center",
   },
+  buttonDisabled: {
+    opacity: 0.5
+  },
   buttonText: {
-    fontSize: 16,
-    color: "#F2F2F2",
+    fontSize: 25,
+    color: "#0D3625",
   },
   onFocusInput: {
-    borderColor: "#5E60CE",
+    borderColor: "#2cb67d",
   },
   containerListHeader: {
     flexDirection: "row",
@@ -81,9 +84,9 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    backgroundColor: "#262626",
+    backgroundColor: "#16161a",
     borderWidth: 1,
-    borderColor: "#333333",
+    borderColor: "#72757e",
     boxShadow: "0px 2px 8px rgba(0, 0, 0, 0.06)",
     borderRadius: 8,
     paddingVertical: 12,
@@ -91,17 +94,12 @@ export const styles = StyleSheet.create({
     gap: 11,
     marginBottom: 8,
   },
-  clearButton: {
-    backgroundColor: "#e74c3c",
-    padding: 10,
-    borderRadius: 5,
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 10,
+  containerListCompleted: {
+    borderColor: "#16161a",
   },
   taskTitle: {
     flex: 1,
-    color: "#fff",
-    fontSize: 14
+    color: "#fffffe",
+    fontSize: 14,
   },
 });
