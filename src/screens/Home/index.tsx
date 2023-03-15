@@ -26,12 +26,20 @@ export function Home() {
     }
   };
 
+  const markTaskComplete = (index: number): void => {
+    const updatedToDoList = [...todoList];
+    updatedToDoList[index].completed = !updatedToDoList[index].completed;
+    setToDoList(updatedToDoList);
+  };
+
+  
+
   return (
     <>
       <View style={styles.containerHeader}>
         <Image source={require('../../assets/logo.png')} />
       </View >
-
+      
       <View style={styles.containerBody}>
 
         <View style={styles.containerForm}>
