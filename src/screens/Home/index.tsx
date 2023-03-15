@@ -32,7 +32,9 @@ export function Home() {
     setToDoList(updatedToDoList);
   };
 
-  
+  const clearCompletedTasks = (): void => {
+    setToDoList(todoList.filter((task) => !task.completed));
+  };
 
   const deleteTask = (index: number): void => {
     const updatedToDoList = [...todoList];
