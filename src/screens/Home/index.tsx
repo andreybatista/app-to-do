@@ -34,6 +34,12 @@ export function Home() {
 
   
 
+  const deleteTask = (index: number): void => {
+    const updatedToDoList = [...todoList];
+    updatedToDoList.splice(index, 1);
+    setToDoList(updatedToDoList);
+  };
+
   return (
     <>
       <View style={styles.containerHeader}>
